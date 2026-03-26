@@ -5,7 +5,7 @@ import plotly.express as px
 from snowflake.snowpark.context import get_active_session
 
 # ─────────────────────────────────────────────────────────────
-# THEME — Dark Forest Pro: Deep Charcoal-Green + Light Sidebar
+# THEME — Crisp Light: Warm White + Forest Green Accents
 # ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -13,41 +13,41 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
     /* ═══════════════════════════════════════════════════
-       DESIGN TOKENS — Dark Forest Pro
+       DESIGN TOKENS — Crisp Light Theme
     ═══════════════════════════════════════════════════ */
     :root {
-        /* ── Main body — deep dark forest ── */
-        --body-bg:          #0f1a13;
-        --body-bg-alt:      #111d15;
-        --panel-bg:         #141f18;
-        --panel-bg-raised:  #192510;
-        --panel-border:     rgba(255,255,255,0.06);
-        --card-bg:          #1a2820;
-        --card-border:      rgba(255,255,255,0.07);
-        --card-border-hover:rgba(61,166,104,0.35);
+        /* ── Main body — warm white / light grey ── */
+        --body-bg:          #f5f7f5;
+        --body-bg-alt:      #eef2ee;
+        --panel-bg:         #ffffff;
+        --panel-bg-raised:  #f0f5f1;
+        --panel-border:     rgba(0,0,0,0.08);
+        --card-bg:          #ffffff;
+        --card-border:      rgba(0,0,0,0.09);
+        --card-border-hover:rgba(45,128,80,0.35);
 
         /* ── Green brand ── */
         --green-100:        #e8f5ef;
-        --green-300:        #6ecca0;
-        --green-400:        #3da668;
-        --green-500:        #2d8050;
-        --green-600:        #1f5c38;
-        --green-glow:       rgba(61,166,104,0.18);
-        --green-glow-strong:rgba(61,166,104,0.30);
-        --green-border:     rgba(61,166,104,0.20);
-        --green-border-med: rgba(61,166,104,0.35);
+        --green-300:        #3da668;
+        --green-400:        #2d8050;
+        --green-500:        #1f5c38;
+        --green-600:        #164530;
+        --green-glow:       rgba(45,128,80,0.10);
+        --green-glow-strong:rgba(45,128,80,0.18);
+        --green-border:     rgba(45,128,80,0.18);
+        --green-border-med: rgba(45,128,80,0.30);
 
-        /* ── Text on dark ── */
-        --text-primary:     #e8f0ea;
-        --text-secondary:   #9dbdaa;
-        --text-muted:       #5a7a65;
-        --text-accent:      #6ecca0;
+        /* ── Text on light ── */
+        --text-primary:     #0f1f14;
+        --text-secondary:   #3a5a46;
+        --text-muted:       #7a9a86;
+        --text-accent:      #2d8050;
 
-        /* ── Sidebar — deliberately light ── */
-        --sb-bg:            #f0f5f1;
-        --sb-bg-deep:       #e4ede7;
-        --sb-border:        #c2d8ca;
-        --sb-text:          #1a3028;
+        /* ── Sidebar — slightly deeper warm white ── */
+        --sb-bg:            #eaf0ec;
+        --sb-bg-deep:       #dce6df;
+        --sb-border:        #b8d0c4;
+        --sb-text:          #0f1f14;
         --sb-text-muted:    #4a7060;
         --sb-label:         #1e5038;
         --sb-input-bg:      #ffffff;
@@ -57,7 +57,7 @@ st.markdown("""
         --sb-accent:        #2d8050;
 
         /* ── Utility ── */
-        --border:           rgba(255,255,255,0.06);
+        --border:           rgba(0,0,0,0.08);
         --radius-xs:        4px;
         --radius-sm:        6px;
         --radius-md:        10px;
@@ -65,12 +65,12 @@ st.markdown("""
         --radius-xl:        20px;
 
         /* ── Status colors ── */
-        --status-high:      #3da668;
-        --status-med:       #d4a017;
-        --status-low:       #c94040;
-        --status-high-bg:   rgba(61,166,104,0.12);
-        --status-med-bg:    rgba(212,160,23,0.12);
-        --status-low-bg:    rgba(201,64,64,0.12);
+        --status-high:      #2d8050;
+        --status-med:       #b8860b;
+        --status-low:       #b03030;
+        --status-high-bg:   rgba(45,128,80,0.10);
+        --status-med-bg:    rgba(184,134,11,0.10);
+        --status-low-bg:    rgba(176,48,48,0.10);
     }
 
     /* ═══════════════════════════════════════════════════
@@ -92,43 +92,42 @@ st.markdown("""
         position: fixed;
         inset: 0;
         background-image:
-            radial-gradient(ellipse 80% 50% at 20% 10%, rgba(45,128,80,0.07) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 40% at 80% 90%, rgba(30,90,55,0.05) 0%, transparent 60%);
+            radial-gradient(ellipse 80% 50% at 20% 10%, rgba(45,128,80,0.04) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 80% 90%, rgba(30,90,55,0.03) 0%, transparent 60%);
         pointer-events: none;
         z-index: 0;
     }
 
-    /* Grid overlay */
+    /* Subtle grid overlay */
     .stApp::after {
         content: '';
         position: fixed;
         inset: 0;
         background-image:
-            linear-gradient(rgba(61,166,104,0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(61,166,104,0.025) 1px, transparent 1px);
+            linear-gradient(rgba(45,128,80,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(45,128,80,0.03) 1px, transparent 1px);
         background-size: 40px 40px;
         pointer-events: none;
         z-index: 0;
     }
 
     /* ═══════════════════════════════════════════════════
-       SIDEBAR — LIGHT THEMED (key contrast)
+       SIDEBAR — SLIGHTLY DEEPER THAN BODY
     ═══════════════════════════════════════════════════ */
     [data-testid="stSidebar"] {
         background: var(--sb-bg) !important;
         border-right: 1px solid var(--sb-border) !important;
-        box-shadow: 4px 0 24px rgba(0,0,0,0.25), 1px 0 0 rgba(255,255,255,0.03) !important;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.06) !important;
     }
     [data-testid="stSidebar"] > div:first-child {
         padding-top: 0 !important;
     }
 
-    /* Sidebar header strip */
     [data-testid="stSidebar"]::before {
         content: '';
         display: block;
         height: 4px;
-        background: linear-gradient(90deg, var(--green-500), var(--green-300), transparent);
+        background: linear-gradient(90deg, var(--green-400), var(--green-300), transparent);
         position: sticky;
         top: 0;
         z-index: 10;
@@ -176,29 +175,21 @@ st.markdown("""
         background: var(--sb-block-bg) !important;
         border: 1px solid var(--sb-block-border) !important;
         border-radius: var(--radius-md) !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-    }
-    /* Sidebar section icons */
-    [data-testid="stSidebar"] .sb-section-icon {
-        width: 28px; height: 28px;
-        border-radius: 6px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 13px;
-        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
     }
 
     /* ═══════════════════════════════════════════════════
        FILE UPLOADER
     ═══════════════════════════════════════════════════ */
     [data-testid="stFileUploader"] {
-        background: rgba(61,166,104,0.04) !important;
+        background: rgba(45,128,80,0.04) !important;
         border: 1.5px dashed var(--green-border-med) !important;
         border-radius: var(--radius-md) !important;
         transition: border-color 0.2s !important;
     }
     [data-testid="stFileUploader"]:hover {
         border-color: var(--green-400) !important;
-        background: rgba(61,166,104,0.07) !important;
+        background: rgba(45,128,80,0.07) !important;
     }
 
     /* ═══════════════════════════════════════════════════
@@ -213,11 +204,12 @@ st.markdown("""
        TABS
     ═══════════════════════════════════════════════════ */
     .stTabs [data-baseweb="tab-list"] {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-md) !important;
         padding: 0.3rem !important;
         gap: 0.15rem !important;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
     }
     .stTabs [data-baseweb="tab"] {
         background: transparent !important;
@@ -231,16 +223,16 @@ st.markdown("""
         transition: all 0.18s !important;
     }
     .stTabs [data-baseweb="tab"]:hover {
-        color: var(--text-accent) !important;
-        background: rgba(61,166,104,0.08) !important;
+        color: var(--green-400) !important;
+        background: rgba(45,128,80,0.07) !important;
     }
     .stTabs [aria-selected="true"] {
-        background: var(--green-500) !important;
+        background: var(--green-400) !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 10px rgba(45,128,80,0.4) !important;
+        box-shadow: 0 2px 10px rgba(45,128,80,0.30) !important;
     }
     .stTabs [data-baseweb="tab-panel"] {
-        background: var(--panel-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--panel-border) !important;
         border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;
         padding: 1.25rem !important;
@@ -251,12 +243,13 @@ st.markdown("""
        METRICS
     ═══════════════════════════════════════════════════ */
     [data-testid="stMetric"] {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-md) !important;
         padding: 1rem 1.1rem !important;
         position: relative !important;
         overflow: hidden !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06) !important;
         transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s !important;
     }
     [data-testid="stMetric"]::before {
@@ -266,18 +259,10 @@ st.markdown("""
         height: 2px;
         background: linear-gradient(90deg, var(--green-400), var(--green-300), transparent);
     }
-    [data-testid="stMetric"]::after {
-        content: '';
-        position: absolute;
-        bottom: 0; right: 0;
-        width: 60px; height: 60px;
-        background: radial-gradient(circle, rgba(61,166,104,0.08) 0%, transparent 70%);
-        border-radius: 50%;
-    }
     [data-testid="stMetric"]:hover {
         border-color: var(--green-border-med) !important;
         transform: translateY(-1px) !important;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px var(--green-border) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.10) !important;
     }
     [data-testid="stMetricValue"] {
         font-family: 'Syne', sans-serif !important;
@@ -300,7 +285,7 @@ st.markdown("""
        BUTTONS
     ═══════════════════════════════════════════════════ */
     .stButton > button {
-        background: linear-gradient(135deg, var(--green-500), var(--green-400)) !important;
+        background: linear-gradient(135deg, var(--green-400), var(--green-300)) !important;
         color: #ffffff !important;
         font-family: 'Syne', sans-serif !important;
         font-weight: 700 !important;
@@ -310,32 +295,21 @@ st.markdown("""
         border: none !important;
         border-radius: var(--radius-sm) !important;
         padding: 0.65rem 1.4rem !important;
-        box-shadow: 0 2px 12px rgba(45,128,80,0.35), 0 0 0 1px rgba(61,166,104,0.2) !important;
+        box-shadow: 0 2px 12px rgba(45,128,80,0.25) !important;
         transition: all 0.2s ease !important;
         width: 100% !important;
-        position: relative !important;
-        overflow: hidden !important;
-    }
-    .stButton > button::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-        opacity: 0;
-        transition: opacity 0.2s;
     }
     .stButton > button:hover {
-        background: linear-gradient(135deg, #256b44, #2d8050) !important;
-        box-shadow: 0 6px 24px rgba(45,128,80,0.50) !important;
+        background: linear-gradient(135deg, var(--green-500), var(--green-400)) !important;
+        box-shadow: 0 6px 24px rgba(45,128,80,0.35) !important;
         transform: translateY(-2px) !important;
     }
-    .stButton > button:hover::after { opacity: 1; }
 
     /* ═══════════════════════════════════════════════════
        EXPANDERS
     ═══════════════════════════════════════════════════ */
     .streamlit-expanderHeader {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-sm) !important;
         padding: 0.65rem 1rem !important;
@@ -346,11 +320,11 @@ st.markdown("""
     }
     .streamlit-expanderHeader:hover {
         border-color: var(--green-border-med) !important;
-        color: var(--text-accent) !important;
-        background: rgba(61,166,104,0.05) !important;
+        color: var(--green-400) !important;
+        background: rgba(45,128,80,0.04) !important;
     }
     .streamlit-expanderContent {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-top: none !important;
         border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
@@ -361,7 +335,7 @@ st.markdown("""
        ALERTS
     ═══════════════════════════════════════════════════ */
     .stAlert {
-        background: rgba(61,166,104,0.07) !important;
+        background: rgba(45,128,80,0.06) !important;
         border: 1px solid var(--green-border) !important;
         border-left: 3px solid var(--green-400) !important;
         border-radius: var(--radius-md) !important;
@@ -373,12 +347,12 @@ st.markdown("""
        CODE BLOCKS
     ═══════════════════════════════════════════════════ */
     .stCodeBlock, pre, code {
-        background: #0a120d !important;
-        border: 1px solid rgba(61,166,104,0.15) !important;
+        background: #f0f5f2 !important;
+        border: 1px solid rgba(45,128,80,0.15) !important;
         border-radius: var(--radius-md) !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
-        color: #7ed9a0 !important;
+        color: #1a4d30 !important;
     }
 
     /* ═══════════════════════════════════════════════════
@@ -386,14 +360,14 @@ st.markdown("""
     ═══════════════════════════════════════════════════ */
     .stSelectbox > div > div,
     .stMultiSelect > div > div {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-sm) !important;
         color: var(--text-primary) !important;
         font-size: 12px !important;
     }
     .stTextInput input, .stTextArea textarea {
-        background: var(--card-bg) !important;
+        background: #ffffff !important;
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-sm) !important;
         color: var(--text-primary) !important;
@@ -408,7 +382,7 @@ st.markdown("""
         border: 1px solid var(--card-border) !important;
         border-radius: var(--radius-md) !important;
         font-size: 12px !important;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important;
     }
 
     /* ═══════════════════════════════════════════════════
@@ -428,24 +402,14 @@ st.markdown("""
         margin-bottom: 1.1rem;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.03) inset;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 0 rgba(255,255,255,0.8) inset;
     }
     .panel::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
         height: 1px;
-        background: linear-gradient(90deg, var(--green-400), rgba(61,166,104,0.3), transparent);
-    }
-    /* Subtle glow orb in panel corners */
-    .panel::after {
-        content: '';
-        position: absolute;
-        top: -40px; right: -40px;
-        width: 120px; height: 120px;
-        background: radial-gradient(circle, rgba(61,166,104,0.06) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
+        background: linear-gradient(90deg, var(--green-400), rgba(45,128,80,0.2), transparent);
     }
 
     .section-label {
@@ -474,12 +438,12 @@ st.markdown("""
         border-radius: var(--radius-md);
         padding: 0.85rem 1rem;
         margin-bottom: 0.9rem;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
 
     /* ── Use Case Cards ── */
     .uc-card {
-        background: var(--card-bg);
+        background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: var(--radius-md);
         padding: 0.9rem 1rem;
@@ -488,21 +452,11 @@ st.markdown("""
         position: relative;
         overflow: hidden;
     }
-    .uc-card::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--green-border), transparent);
-        opacity: 0;
-        transition: opacity 0.2s;
-    }
     .uc-card:hover {
         border-color: var(--card-border-hover);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px var(--green-border);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.10);
         transform: translateY(-1px);
     }
-    .uc-card:hover::after { opacity: 1; }
     .uc-card-title {
         font-weight: 600;
         font-size: 12px;
@@ -532,9 +486,9 @@ st.markdown("""
     /* ── Tags ── */
     .tag {
         display: inline-block;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-        color: var(--text-secondary);
+        background: rgba(45,128,80,0.08);
+        border: 1px solid rgba(45,128,80,0.18);
+        color: var(--green-400);
         font-size: 10px;
         font-weight: 600;
         padding: 0.15rem 0.55rem;
@@ -546,7 +500,7 @@ st.markdown("""
 
     /* ── Gate Box ── */
     .gate-box {
-        background: rgba(61,166,104,0.06);
+        background: rgba(45,128,80,0.05);
         border: 1px solid var(--green-border);
         border-left: 3px solid var(--green-400);
         border-radius: var(--radius-md);
@@ -605,16 +559,16 @@ st.markdown("""
         position: sticky;
         top: 0;
         z-index: 999;
-        background: rgba(10,18,12,0.96);
+        background: rgba(255,255,255,0.97);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(61,166,104,0.12);
+        border-bottom: 1px solid rgba(45,128,80,0.12);
         padding: 0.7rem 1.75rem;
         margin: 0 -1rem 1.5rem -1rem;
         display: flex;
         align-items: center;
         gap: 1rem;
-        box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+        box-shadow: 0 2px 20px rgba(0,0,0,0.07);
     }
 
     /* ── Live pill ── */
@@ -622,13 +576,13 @@ st.markdown("""
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        background: rgba(61,166,104,0.10);
-        border: 1px solid rgba(61,166,104,0.30);
+        background: rgba(45,128,80,0.08);
+        border: 1px solid rgba(45,128,80,0.25);
         border-radius: 20px;
         padding: 0.28rem 0.8rem;
         font-size: 10px;
         font-weight: 700;
-        color: var(--green-300);
+        color: var(--green-400);
         letter-spacing: 0.08em;
         text-transform: uppercase;
         font-family: 'Syne', sans-serif;
@@ -644,7 +598,7 @@ st.markdown("""
         position: absolute;
         inset: -3px;
         border-radius: 50%;
-        border: 1.5px solid rgba(110,204,160,0.4);
+        border: 1.5px solid rgba(61,166,104,0.4);
         animation: live-ping 1.6s ease-out infinite;
     }
     @keyframes live-ping {
@@ -662,19 +616,13 @@ st.markdown("""
         justify-content: center;
         gap: 1.6rem;
         padding: 3.5rem 2rem;
-        background: var(--card-bg);
+        background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: var(--radius-lg);
         margin-bottom: 1.1rem;
         position: relative;
         overflow: hidden;
-    }
-    .pulse-loader::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(61,166,104,0.08), transparent);
-        pointer-events: none;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
     }
     .pulse-rings {
         position: relative;
@@ -684,7 +632,7 @@ st.markdown("""
     .pulse-rings span {
         position: absolute;
         border-radius: 50%;
-        border: 1.5px solid rgba(110,204,160,0.7);
+        border: 1.5px solid rgba(45,128,80,0.5);
         animation: pulse-expand 2.4s ease-out infinite;
     }
     .pulse-rings span:nth-child(1) { width:60px; height:60px; animation-delay:0s; }
@@ -694,7 +642,7 @@ st.markdown("""
         width: 12px; height: 12px;
         background: var(--green-400);
         border: none;
-        box-shadow: 0 0 12px rgba(61,166,104,0.6);
+        box-shadow: 0 0 12px rgba(45,128,80,0.4);
         animation: none;
     }
     @keyframes pulse-expand {
@@ -704,18 +652,18 @@ st.markdown("""
     .pulse-steps { display: flex; flex-direction: column; gap: 0.55rem; width: 100%; max-width: 280px; }
     .pulse-step {
         display: flex; align-items: center; gap: 0.65rem;
-        font-size: 11px; color: rgba(255,255,255,0.2);
+        font-size: 11px; color: rgba(0,0,0,0.2);
         transition: color 0.3s; font-family: 'DM Sans', sans-serif;
     }
-    .pulse-step.active { color: rgba(255,255,255,0.85); }
+    .pulse-step.active { color: rgba(0,0,0,0.75); }
     .pulse-step.done   { color: var(--green-400); }
     .step-dot {
         width: 6px; height: 6px; border-radius: 50%;
-        background: rgba(255,255,255,0.15); flex-shrink: 0;
+        background: rgba(0,0,0,0.12); flex-shrink: 0;
     }
     .pulse-step.active .step-dot {
         background: var(--green-300);
-        box-shadow: 0 0 8px rgba(110,204,160,0.7);
+        box-shadow: 0 0 8px rgba(45,128,80,0.5);
         animation: blink 1s ease-in-out infinite;
     }
     .pulse-step.done .step-dot { background: var(--green-400); }
@@ -731,25 +679,19 @@ st.markdown("""
     }
 
     /* ═══════════════════════════════════════════════════
-       NEW: FEATURE CARDS — Sentiment / Score widgets
+       FEATURE CARDS
     ═══════════════════════════════════════════════════ */
-    .score-ring {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
     .insight-chip {
         display: inline-flex;
         align-items: center;
         gap: 0.3rem;
-        background: rgba(61,166,104,0.08);
+        background: rgba(45,128,80,0.07);
         border: 1px solid var(--green-border);
         border-radius: 20px;
         padding: 0.2rem 0.65rem;
         font-size: 10px;
         font-weight: 600;
-        color: var(--green-300);
+        color: var(--green-400);
         margin: 0.2rem;
         letter-spacing: 0.04em;
     }
@@ -757,8 +699,8 @@ st.markdown("""
     /* ── Scrollbar styling ── */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--body-bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(61,166,104,0.25); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(61,166,104,0.45); }
+    ::-webkit-scrollbar-thumb { background: rgba(45,128,80,0.2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(45,128,80,0.35); }
 
     /* ── Focus rings ── */
     *:focus-visible { outline: 2px solid var(--green-400) !important; outline-offset: 2px !important; }
@@ -789,17 +731,17 @@ st.markdown("""
     <div style="width:34px; height:34px;
                 background: linear-gradient(135deg, #1f5c38 0%, #3da668 100%);
                 border-radius:9px; display:flex; align-items:center; justify-content:center;
-                font-size:1rem; box-shadow: 0 4px 16px rgba(61,166,104,0.35),
-                0 0 0 1px rgba(61,166,104,0.2); flex-shrink:0;">⚡</div>
+                font-size:1rem; box-shadow: 0 4px 16px rgba(45,128,80,0.25),
+                0 0 0 1px rgba(45,128,80,0.15); flex-shrink:0;">⚡</div>
     <div style="display:flex; flex-direction:column; gap:0; margin-left:0.15rem;">
         <div style="font-size:9px; font-weight:700; text-transform:uppercase;
-                    letter-spacing:0.2em; color:rgba(110,204,160,0.6); line-height:1;
+                    letter-spacing:0.2em; color:rgba(45,128,80,0.55); line-height:1;
                     font-family:'Syne',sans-serif;">Snowflake Cortex</div>
-        <div style="font-size:16px; font-weight:800; color:#e8f0ea;
+        <div style="font-size:16px; font-weight:800; color:#0f1f14;
                     letter-spacing:-0.025em; line-height:1.25; font-family:'Syne',sans-serif;">InsightForge</div>
     </div>
-    <div style="width:1px; height:24px; background:rgba(255,255,255,0.08); margin:0 0.5rem;"></div>
-    <div style="font-size:11px; color:rgba(255,255,255,0.25); margin-top:1px; font-family:'DM Sans',sans-serif;">
+    <div style="width:1px; height:24px; background:rgba(0,0,0,0.08); margin:0 0.5rem;"></div>
+    <div style="font-size:11px; color:rgba(0,0,0,0.3); margin-top:1px; font-family:'DM Sans',sans-serif;">
         Business Context → Data‑Driven Execution
     </div>
     <div style="margin-left:auto; display:flex; gap:0.5rem; align-items:center;">
@@ -817,11 +759,10 @@ session = get_active_session()
 # Sidebar
 # ─────────────────────────────────────────────────────────────
 with st.sidebar:
-    # Sidebar branding strip
     st.markdown("""
     <div style="background: linear-gradient(135deg, #1a3d28, #2d8050);
                 margin: 0 -1rem 1.2rem -1rem; padding: 1rem 1.25rem;
-                border-bottom: 1px solid #c2d8ca;">
+                border-bottom: 1px solid #b8d0c4;">
         <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:800;
                     color:#ffffff; letter-spacing:-0.01em;">Configure Session</div>
         <div style="font-size:11px; color:rgba(255,255,255,0.65); margin-top:2px;
@@ -829,7 +770,6 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Transcripts Block ────────────────────────────────
     st.markdown("<div class='sb-block'>", unsafe_allow_html=True)
     st.markdown("""
     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
@@ -854,7 +794,6 @@ with st.sidebar:
         st.success(f"✓ {len(uploaded_files)} file(s) uploaded.")
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Customer Block ───────────────────────────────────
     st.markdown("<div class='sb-block'>", unsafe_allow_html=True)
     st.markdown("""
     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
@@ -869,7 +808,6 @@ with st.sidebar:
     industry = st.text_input("Industry", "SaaS / Technology")
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Data Sources Block ───────────────────────────────
     st.markdown("<div class='sb-block'>", unsafe_allow_html=True)
     st.markdown("""
     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
@@ -886,7 +824,6 @@ with st.sidebar:
                                      default=table_options[:2] if table_options else [])
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── NEW: Analysis Options ────────────────────────────
     st.markdown("<div class='sb-block'>", unsafe_allow_html=True)
     st.markdown("""
     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
@@ -904,10 +841,8 @@ with st.sidebar:
     include_risk = st.checkbox("Flag Data Privacy Risks", value=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Analyze Button ───────────────────────────────────
     run_analysis = st.button("⚡ Analyze & Generate Use Cases", type="primary")
 
-    # ── Sidebar footer ──
     st.markdown("""
     <div style="margin-top:1.5rem; padding-top:0.75rem; border-top:1px solid #c2d8ca;
                 text-align:center; font-size:10px; color:#7aaa88; font-family:'DM Sans',sans-serif;">
@@ -951,7 +886,6 @@ if run_analysis:
     {other if other else 'None'}
     """
 
-    # ── Animated Pulse Loader ──────────────────────────
     loader_placeholder = st.empty()
     loader_placeholder.markdown("""
     <div class="pulse-loader">
@@ -972,7 +906,6 @@ if run_analysis:
 
     with st.spinner(""):
 
-        # ── Step 1: Extract insights ──────────────────
         extraction_prompt = f"""
         You are an expert Snowflake business consultant. Analyze the following customer transcripts and extract use cases across THREE disciplines:
 
@@ -1034,7 +967,6 @@ if run_analysis:
                 "top_risk": "Continued manual reporting will delay decision-making by 2-3 weeks as customer scales."
             }
 
-        # ── Step 2: Market research ────────────────────
         market_prompt = f"""
         For a customer in the {industry} industry, provide 3 current market trends or benchmarks relevant to data analytics and AI adoption.
         Suggest how these translate into business use cases for this customer.
@@ -1042,7 +974,6 @@ if run_analysis:
         st.session_state.market_trends = session.sql(f"SELECT cortex_complete('{market_prompt.replace(chr(39), chr(39)*2)}') as trends").collect()[0][0]
         st.session_state.industry_cached = industry
 
-        # ── Step 3: Schema matching ────────────────────
         selected_tables_str = "', '".join(selected_tables)
         schema_df = session.sql(f"""
             SELECT fully_qualified_table_name, LISTAGG(column_name, ', ') AS columns
@@ -1142,9 +1073,6 @@ if st.session_state.analysis:
     matches       = st.session_state.matches
     industry_disp = st.session_state.industry_cached or "Your Industry"
 
-    # ══════════════════════════════════════════════════════
-    # OVERVIEW METRICS
-    # ══════════════════════════════════════════════════════
     st.markdown("<div class='section-label'>Analysis Overview</div>", unsafe_allow_html=True)
     st.markdown("<div class='panel'>", unsafe_allow_html=True)
     metrics = analysis.get("metrics", {})
@@ -1164,7 +1092,6 @@ if st.session_state.analysis:
         maturity = metrics.get("data_maturity", "—")
         st.metric("Data Maturity", maturity)
 
-    # ── Key Themes + Top Risk ─────────────────────────
     themes = analysis.get("key_themes", [])
     top_risk = analysis.get("top_risk", "")
     if themes or top_risk:
@@ -1181,27 +1108,21 @@ if st.session_state.analysis:
         with col_rk:
             if top_risk:
                 st.markdown(f"""
-                <div style="background:rgba(201,64,64,0.08);border:1px solid rgba(201,64,64,0.2);
-                            border-left:3px solid #c94040;border-radius:8px;padding:0.65rem 0.85rem;margin-top:0.75rem;">
-                    <div style="font-size:10px;font-weight:700;color:#c94040;text-transform:uppercase;
+                <div style="background:rgba(176,48,48,0.06);border:1px solid rgba(176,48,48,0.18);
+                            border-left:3px solid #b03030;border-radius:8px;padding:0.65rem 0.85rem;margin-top:0.75rem;">
+                    <div style="font-size:10px;font-weight:700;color:#b03030;text-transform:uppercase;
                                 letter-spacing:0.1em;margin-bottom:0.2rem;font-family:'Syne',sans-serif;">⚠ Top Risk Signal</div>
-                    <div style="font-size:11px;color:#e8a0a0;line-height:1.5;">{top_risk}</div>
+                    <div style="font-size:11px;color:#803030;line-height:1.5;">{top_risk}</div>
                 </div>""", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ══════════════════════════════════════════════════════
-    # MARKET INTELLIGENCE
-    # ══════════════════════════════════════════════════════
     st.markdown("<div class='section-label' style='margin-top:1.1rem;'>Market Intelligence</div>", unsafe_allow_html=True)
     st.markdown("<div class='panel'>", unsafe_allow_html=True)
     st.markdown(f"<h2>📈 Industry Trends — {industry_disp}</h2>", unsafe_allow_html=True)
     st.markdown(f"<div style='color:var(--text-secondary); font-size:12px; line-height:1.75;'>{market_trends}</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ══════════════════════════════════════════════════════
-    # USE CASE LANDSCAPE
-    # ══════════════════════════════════════════════════════
     st.markdown("<div class='section-label' style='margin-top:1.1rem;'>Use Case Landscape</div>", unsafe_allow_html=True)
     st.markdown("<div class='panel'>", unsafe_allow_html=True)
     st.markdown("<h2>💡 Identified Opportunities — Select for Demo</h2>", unsafe_allow_html=True)
@@ -1219,22 +1140,22 @@ if st.session_state.analysis:
             name, roi, tier, stakeholder, complexity, urgency = str(uc), "", "Strategic", "", 0, ""
 
         tier_map = {
-            "Quick Win":        ("rgba(61,166,104,0.12)",  "#3da668",  "rgba(61,166,104,0.3)"),
-            "Strategic":        ("rgba(79,140,255,0.10)",  "#5b9aff",  "rgba(79,140,255,0.3)"),
-            "Transformational": ("rgba(212,160,23,0.10)",  "#d4a017",  "rgba(212,160,23,0.3)"),
+            "Quick Win":        ("rgba(45,128,80,0.08)",   "#2d8050",  "rgba(45,128,80,0.25)"),
+            "Strategic":        ("rgba(37,99,235,0.07)",   "#2563eb",  "rgba(37,99,235,0.20)"),
+            "Transformational": ("rgba(184,134,11,0.08)",  "#b8860b",  "rgba(184,134,11,0.22)"),
         }
         bg, fg, border = tier_map.get(tier, tier_map["Strategic"])
 
-        urgency_map = {"Immediate": "#c94040", "Near-term": "#d4a017", "Future": "#5b9aff"}
-        urg_color   = urgency_map.get(urgency, "#5a7a65")
+        urgency_map = {"Immediate": "#b03030", "Near-term": "#b8860b", "Future": "#2563eb"}
+        urg_color   = urgency_map.get(urgency, "#7a9a86")
 
         complexity_dots = "".join([
             '<span style="width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:2px;background:' +
-            ("#3da668" if i < complexity else "rgba(255,255,255,0.12)") + ';"></span>'
+            ("#2d8050" if i < complexity else "rgba(0,0,0,0.10)") + ';"></span>'
             for i in range(5)
         ]) if complexity else ""
 
-        roi_html   = f'<div style="font-size:11px;color:#6ecca0;font-weight:600;margin-bottom:0.2rem;line-height:1.4;">💰 {roi}</div>' if roi else ""
+        roi_html   = f'<div style="font-size:11px;color:#2d8050;font-weight:600;margin-bottom:0.2rem;line-height:1.4;">💰 {roi}</div>' if roi else ""
         holder_html= f'<div style="font-size:10px;color:var(--text-muted);">👤 {stakeholder}{(" · " if stakeholder and urgency else "")}<span style="color:{urg_color};font-weight:600;">{urgency}</span></div>' if (stakeholder or urgency) else ""
 
         return f"""
@@ -1313,11 +1234,9 @@ if st.session_state.analysis:
                 elif uc_name in st.session_state.sel_ucs:
                     st.session_state.sel_ucs.remove(uc_name)
 
-    # ── NEW: Priority Matrix Tab ─────────────────────────────
     with tab_prio:
         st.markdown("<div style='font-size:11px;color:var(--text-muted);margin-bottom:0.75rem;'>Use cases plotted by complexity vs. value tier. Quick Wins are your immediate starting point.</div>", unsafe_allow_html=True)
 
-        all_ucs_for_matrix = analytics_ucs + de_ucs + ds_ucs
         matrix_data = []
         type_labels = (
             [("Analytics", uc) for uc in analytics_ucs] +
@@ -1347,40 +1266,39 @@ if st.session_state.analysis:
                 hover_name="name",
                 hover_data={"roi": True, "stakeholder": True, "complexity": True, "value_y": False, "type": False},
                 color_discrete_map={
-                    "Analytics": "#3da668",
-                    "Data Engineering": "#5b9aff",
-                    "Data Science": "#d4a017",
+                    "Analytics": "#2d8050",
+                    "Data Engineering": "#2563eb",
+                    "Data Science": "#b8860b",
                 },
                 text="name",
             )
-            fig_matrix.update_traces(textposition="top center", textfont=dict(size=9, color="#9dbdaa"))
+            fig_matrix.update_traces(textposition="top center", textfont=dict(size=9, color="#3a5a46"))
             fig_matrix.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(248,252,249,1)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(family='DM Sans', color='#9dbdaa', size=11),
+                font=dict(family='DM Sans', color='#3a5a46', size=11),
                 xaxis=dict(
                     title="Implementation Complexity →",
-                    gridcolor='rgba(255,255,255,0.04)',
-                    linecolor='rgba(255,255,255,0.08)',
+                    gridcolor='rgba(0,0,0,0.05)',
+                    linecolor='rgba(0,0,0,0.10)',
                     tickvals=[1,2,3,4,5],
                     ticktext=["Very Easy","Easy","Medium","Hard","Very Hard"],
-                    color='#5a7a65',
+                    color='#7a9a86',
                 ),
                 yaxis=dict(
                     title="Business Value ↑",
-                    gridcolor='rgba(255,255,255,0.04)',
-                    linecolor='rgba(255,255,255,0.08)',
+                    gridcolor='rgba(0,0,0,0.05)',
+                    linecolor='rgba(0,0,0,0.10)',
                     tickvals=[1,2,3],
                     ticktext=["Quick Win","Strategic","Transformational"],
-                    color='#5a7a65',
+                    color='#7a9a86',
                 ),
-                legend=dict(font=dict(color='#9dbdaa', size=10), bgcolor='rgba(0,0,0,0)'),
+                legend=dict(font=dict(color='#3a5a46', size=10), bgcolor='rgba(0,0,0,0)'),
                 margin=dict(l=0, r=0, t=20, b=0),
                 height=380,
             )
-            # Add quadrant shading
             fig_matrix.add_shape(type="rect", x0=0.5, y0=0.5, x1=2.5, y1=1.5,
-                                  fillcolor="rgba(61,166,104,0.06)", line=dict(width=0), layer="below")
+                                  fillcolor="rgba(45,128,80,0.05)", line=dict(width=0), layer="below")
             st.plotly_chart(fig_matrix, use_container_width=True)
             st.markdown("""
             <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.25rem;">
@@ -1397,11 +1315,11 @@ if st.session_state.analysis:
                 <div style="font-size:12px;">No use cases selected yet.<br/>Tick 'Add to Demo' on any use case above.</div>
             </div>""", unsafe_allow_html=True)
         else:
-            st.markdown(f"<div style='font-size:12px;color:#3da668;font-weight:600;margin-bottom:0.5rem;'>✓ {len(st.session_state.sel_ucs)} use case(s) queued for demo</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size:12px;color:#2d8050;font-weight:600;margin-bottom:0.5rem;'>✓ {len(st.session_state.sel_ucs)} use case(s) queued for demo</div>", unsafe_allow_html=True)
             for uc_name in st.session_state.sel_ucs:
                 st.markdown(f"""
-                <div style="padding:0.4rem 0.85rem;background:rgba(61,166,104,0.07);
-                            border:1px solid rgba(61,166,104,0.18);border-radius:6px;
+                <div style="padding:0.4rem 0.85rem;background:rgba(45,128,80,0.06);
+                            border:1px solid rgba(45,128,80,0.18);border-radius:6px;
                             margin-bottom:0.35rem;font-size:12px;color:var(--text-primary);">
                     <span style="color:var(--green-400);margin-right:0.4rem;">✦</span>{uc_name}
                 </div>""", unsafe_allow_html=True)
@@ -1411,9 +1329,6 @@ if st.session_state.analysis:
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ══════════════════════════════════════════════════════
-    # DATA MATCH & DEMO SELECTION
-    # ══════════════════════════════════════════════════════
     all_ucs_flat = analytics_ucs + de_ucs + ds_ucs
 
     if matches:
@@ -1423,11 +1338,11 @@ if st.session_state.analysis:
         st.markdown("<div style='font-size:11px;color:var(--text-muted);margin-bottom:0.85rem;'>Each use case validated against your actual database schema. Confidence shows how well your existing data supports delivery.</div>", unsafe_allow_html=True)
 
         conf_styles = {
-            "High":   {"color": "#3da668", "bg": "rgba(61,166,104,0.12)",  "border": "rgba(61,166,104,0.25)"},
-            "Medium": {"color": "#d4a017", "bg": "rgba(212,160,23,0.10)",  "border": "rgba(212,160,23,0.25)"},
-            "Low":    {"color": "#c94040", "bg": "rgba(201,64,64,0.08)",   "border": "rgba(201,64,64,0.22)"},
+            "High":   {"color": "#2d8050", "bg": "rgba(45,128,80,0.08)",  "border": "rgba(45,128,80,0.22)"},
+            "Medium": {"color": "#b8860b", "bg": "rgba(184,134,11,0.08)", "border": "rgba(184,134,11,0.22)"},
+            "Low":    {"color": "#b03030", "bg": "rgba(176,48,48,0.07)",  "border": "rgba(176,48,48,0.20)"},
         }
-        type_colors = {"Analytics": "#5b9aff", "Data Engineering": "#b07fff", "Data Science": "#3da668"}
+        type_colors = {"Analytics": "#2563eb", "Data Engineering": "#7c3aed", "Data Science": "#2d8050"}
 
         for m in matches:
             conf     = m.get("data_confidence", "Medium")
@@ -1435,16 +1350,16 @@ if st.session_state.analysis:
             proof    = m.get("what_data_proves", "")
             reason   = m.get("confidence_reason", "")
             cols_used= ", ".join(m.get("columns_used", []))
-            type_fg  = type_colors.get(m.get("type","Analytics"), "#5b9aff")
+            type_fg  = type_colors.get(m.get("type","Analytics"), "#2563eb")
             effort   = m.get("estimated_effort_days", "")
             features = m.get("snowflake_features", [])
-            features_html = "".join([f'<span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:3px;padding:0.1rem 0.4rem;font-size:9px;color:var(--text-muted);margin-right:0.25rem;">{f}</span>' for f in features])
+            features_html = "".join([f'<span style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:3px;padding:0.1rem 0.4rem;font-size:9px;color:var(--text-muted);margin-right:0.25rem;">{f}</span>' for f in features])
 
             st.markdown(f"""
-            <div style="background:var(--card-bg);border:1px solid var(--card-border);
+            <div style="background:#ffffff;border:1px solid var(--card-border);
                         border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:0.6rem;
                         border-left:3px solid {cs['color']};
-                        transition:border-color 0.2s;">
+                        box-shadow:0 1px 6px rgba(0,0,0,0.06);">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.4rem;">
                     <div style="font-size:13px;font-weight:700;color:var(--text-primary);
                                 font-family:'Syne',sans-serif;">{m.get('usecase','')}</div>
@@ -1454,12 +1369,12 @@ if st.session_state.analysis:
                                      border-radius:4px;text-transform:uppercase;font-family:'Syne',sans-serif;">
                             {conf} Confidence
                         </span>
-                        <span style="background:rgba(255,255,255,0.04);color:{type_fg};
-                                     border:1px solid rgba(255,255,255,0.08);
+                        <span style="background:rgba(0,0,0,0.03);color:{type_fg};
+                                     border:1px solid rgba(0,0,0,0.08);
                                      font-size:9px;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;">
                             {m.get('type','')}
                         </span>
-                        {f'<span style="background:rgba(255,255,255,0.03);color:var(--text-muted);border:1px solid rgba(255,255,255,0.07);font-size:9px;padding:0.15rem 0.5rem;border-radius:4px;">~{effort}d</span>' if effort else ''}
+                        {f'<span style="background:rgba(0,0,0,0.03);color:var(--text-muted);border:1px solid rgba(0,0,0,0.07);font-size:9px;padding:0.15rem 0.5rem;border-radius:4px;">~{effort}d</span>' if effort else ''}
                     </div>
                 </div>
                 <div style="font-size:11px;color:var(--text-secondary);margin-bottom:0.3rem;line-height:1.55;">
@@ -1502,29 +1417,29 @@ if st.session_state.analysis:
             tier    = roi_meta.get("value_tier","Strategic")
             roi_val = roi_meta.get("roi","")
             holder  = roi_meta.get("stakeholder","")
-            tier_col= {"Quick Win":"#3da668","Strategic":"#5b9aff","Transformational":"#d4a017"}.get(tier,"#5b9aff")
+            tier_col= {"Quick Win":"#2d8050","Strategic":"#2563eb","Transformational":"#b8860b"}.get(tier,"#2563eb")
             ttv     = "4–8 weeks" if tier=="Quick Win" else "3–6 months" if tier=="Strategic" else "6–12 months"
             st.markdown(f"""
             <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.55rem;margin:0.75rem 0 0.85rem 0;">
-                <div style="background:rgba(61,166,104,0.08);border:1px solid rgba(61,166,104,0.18);
+                <div style="background:rgba(45,128,80,0.07);border:1px solid rgba(45,128,80,0.18);
                             border-radius:8px;padding:0.75rem 0.85rem;">
-                    <div style="font-size:9px;font-weight:700;color:var(--green-400);text-transform:uppercase;
+                    <div style="font-size:9px;font-weight:700;color:#2d8050;text-transform:uppercase;
                                 letter-spacing:0.1em;margin-bottom:0.2rem;font-family:'Syne',sans-serif;">💰 ROI</div>
                     <div style="font-size:11px;color:var(--text-primary);font-weight:600;line-height:1.4;">{roi_val}</div>
                 </div>
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+                <div style="background:rgba(0,0,0,0.02);border:1px solid var(--card-border);
                             border-radius:8px;padding:0.75rem 0.85rem;">
                     <div style="font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;
                                 letter-spacing:0.1em;margin-bottom:0.2rem;font-family:'Syne',sans-serif;">🎯 Tier</div>
                     <div style="font-size:14px;font-weight:800;color:{tier_col};font-family:'Syne',sans-serif;">{tier}</div>
                 </div>
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+                <div style="background:rgba(0,0,0,0.02);border:1px solid var(--card-border);
                             border-radius:8px;padding:0.75rem 0.85rem;">
                     <div style="font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;
                                 letter-spacing:0.1em;margin-bottom:0.2rem;font-family:'Syne',sans-serif;">👤 Stakeholder</div>
                     <div style="font-size:14px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;">{holder}</div>
                 </div>
-                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+                <div style="background:rgba(0,0,0,0.02);border:1px solid var(--card-border);
                             border-radius:8px;padding:0.75rem 0.85rem;">
                     <div style="font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;
                                 letter-spacing:0.1em;margin-bottom:0.2rem;font-family:'Syne',sans-serif;">⏱ Time to Value</div>
@@ -1617,10 +1532,10 @@ if st.session_state.analysis:
             st.markdown(f"<h2>📊 {selected_match['usecase']}</h2>", unsafe_allow_html=True)
             st.markdown(f"<p style='color:var(--text-secondary);font-size:11px;margin-bottom:1.2rem;line-height:1.6;'>{selected_match['demo_description']}</p>", unsafe_allow_html=True)
         with hc2:
-            source_color = "#3da668" if data_source == "live" else "#5b9aff"
+            source_color = "#2d8050" if data_source == "live" else "#2563eb"
             source_label = "● Live Data" if data_source == "live" else "◈ Prototype"
             st.markdown(f"""
-            <div style="background:rgba(61,166,104,0.06);border:1px solid rgba(61,166,104,0.18);
+            <div style="background:rgba(45,128,80,0.05);border:1px solid rgba(45,128,80,0.18);
                         border-radius:8px;padding:0.45rem 0.75rem;text-align:center;margin-top:0.5rem;">
                 <div style="font-size:9px;font-weight:700;color:{source_color};
                             letter-spacing:0.1em;text-transform:uppercase;font-family:'Syne',sans-serif;">{source_label}</div>
@@ -1635,7 +1550,6 @@ if st.session_state.analysis:
 
         fig = fig2 = fig3 = None
 
-        # ── KPI Row ───────────────────────────────────
         kpi_cols = st.columns(min(len(num_cols) + 1, 5))
         with kpi_cols[0]:
             st.metric("Records", df.shape[0])
@@ -1645,14 +1559,13 @@ if st.session_state.analysis:
                 label = nc.replace("_", " ").title()
                 st.metric(label, f"{val:,.1f}")
 
-        # Plotly theme for dark background
-        dark_plot_layout = dict(
-            plot_bgcolor='rgba(0,0,0,0)',
+        light_plot_layout = dict(
+            plot_bgcolor='rgba(248,252,249,1)',
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(family='DM Sans', color='#9dbdaa', size=11),
+            font=dict(family='DM Sans', color='#3a5a46', size=11),
             margin=dict(l=0, r=0, t=36, b=0),
-            xaxis=dict(gridcolor='rgba(255,255,255,0.04)', linecolor='rgba(255,255,255,0.08)', color='#5a7a65'),
-            yaxis=dict(gridcolor='rgba(255,255,255,0.04)', linecolor='rgba(255,255,255,0.08)', color='#5a7a65'),
+            xaxis=dict(gridcolor='rgba(0,0,0,0.05)', linecolor='rgba(0,0,0,0.10)', color='#7a9a86'),
+            yaxis=dict(gridcolor='rgba(0,0,0,0.05)', linecolor='rgba(0,0,0,0.10)', color='#7a9a86'),
         )
 
         if num_cols:
@@ -1660,12 +1573,12 @@ if st.session_state.analysis:
             fig = px.bar(
                 df, x=dim_col, y=y_col,
                 color=y_col,
-                color_continuous_scale=[[0,'#1a3d28'],[0.4,'#2d8050'],[0.7,'#3da668'],[1,'#6ecca0']],
+                color_continuous_scale=[[0,'#c8e6d4'],[0.4,'#6ecca0'],[0.7,'#2d8050'],[1,'#1f5c38']],
                 labels={y_col: y_col.replace("_"," ").title(), dim_col: ''},
             )
-            fig.update_layout(**dark_plot_layout,
+            fig.update_layout(**light_plot_layout,
                 title=dict(text=f"{y_col.replace('_',' ').title()} by {dim_col.replace('_',' ').title()}",
-                           font=dict(family='Syne', color='#e8f0ea', size=13)),
+                           font=dict(family='Syne', color='#0f1f14', size=13)),
                 coloraxis_showscale=False, height=300,
             )
             st.plotly_chart(fig, use_container_width=True)
@@ -1678,25 +1591,25 @@ if st.session_state.analysis:
             if num_cols:
                 pie_col = num_cols[-1]
                 fig2 = px.pie(df, values=pie_col, names=dim_col, hole=0.58,
-                              color_discrete_sequence=['#3da668','#6ecca0','#2d8050','#1a3d28','#9eddb8','#b8eecb'])
-                fig2.update_layout(**{k:v for k,v in dark_plot_layout.items() if k not in ['xaxis','yaxis']},
+                              color_discrete_sequence=['#2d8050','#3da668','#6ecca0','#c8e6d4','#1f5c38','#9eddb8'])
+                fig2.update_layout(**{k:v for k,v in light_plot_layout.items() if k not in ['xaxis','yaxis']},
                     title=dict(text=f"{pie_col.replace('_',' ').title()} Split",
-                               font=dict(family='Syne', color='#e8f0ea', size=12)),
+                               font=dict(family='Syne', color='#0f1f14', size=12)),
                     showlegend=True,
-                    legend=dict(font=dict(color='#9dbdaa', size=10), bgcolor='rgba(0,0,0,0)'),
+                    legend=dict(font=dict(color='#3a5a46', size=10), bgcolor='rgba(0,0,0,0)'),
                     height=260,
                 )
                 st.plotly_chart(fig2, use_container_width=True)
 
         if len(num_cols) >= 2:
             fig3 = px.line(df, x=dim_col, y=num_cols[:2],
-                           color_discrete_sequence=['#3da668', '#6ecca0'],
+                           color_discrete_sequence=['#2d8050', '#3da668'],
                            labels={'value': 'Value', dim_col: ''})
             fig3.update_traces(line=dict(width=2.5))
-            fig3.update_layout(**dark_plot_layout,
-                title=dict(text='Trend Comparison', font=dict(family='Syne', color='#e8f0ea', size=13)),
+            fig3.update_layout(**light_plot_layout,
+                title=dict(text='Trend Comparison', font=dict(family='Syne', color='#0f1f14', size=13)),
                 height=240,
-                legend=dict(font=dict(color='#9dbdaa', size=10), bgcolor='rgba(0,0,0,0)'),
+                legend=dict(font=dict(color='#3a5a46', size=10), bgcolor='rgba(0,0,0,0)'),
             )
             st.plotly_chart(fig3, use_container_width=True)
 
@@ -1728,7 +1641,7 @@ if st.session_state.analysis:
         st.markdown("</div>", unsafe_allow_html=True)
 
         # ══════════════════════════════════════════════════
-        # CUSTOMER PITCH
+        # CUSTOMER PITCH — QUANTITATIVE
         # ══════════════════════════════════════════════════
         if roi_meta:
             st.markdown("<div class='section-label' style='margin-top:1.1rem;'>Customer Pitch</div>", unsafe_allow_html=True)
@@ -1742,35 +1655,42 @@ if st.session_state.analysis:
                 proof   = selected_match.get("what_data_proves", "")
                 ttv     = "4–8 weeks" if tier=="Quick Win" else "3–6 months" if tier=="Strategic" else "6–12 months"
 
-                pitch_prompt = f"""You are a Snowflake Sales Engineer. Write a short, punchy customer pitch for one use case.
+                # ── UPDATED: Quantitative pitch prompt ──
+                pitch_prompt = f"""You are a Snowflake Sales Engineer preparing a data-driven customer pitch.
+Every single talking point MUST contain specific numbers, percentages, dollar amounts, or timeframes.
+No vague claims — every sentence must be anchored to a measurable metric.
 
 Customer: {customer_name} | Industry: {industry} | Stakeholder: {holder}
 Use Case: {selected_match['usecase']}
-ROI: {roi_val}
-What the live data just showed: {proof}
-Time to value: {ttv}
+ROI Evidence: {roi_val}
+Live data insight: {proof}
+Implementation timeline: {ttv}
 
-Return EXACTLY this structure. Keep each point to 1-2 sentences maximum.
+Write EXACTLY these 6 sections. Each must contain at least ONE hard number (%, $, days, hours, X times):
 
 🔴 THE PROBLEM
-One sentence: what pain is the customer feeling right now?
+One sentence with a specific metric showing the current cost/pain (e.g. "Teams spend X hours/week..." or "Y% of revenue is lost to...").
 
-💡 WHAT THIS SOLVES
-One sentence: what does this use case enable them to do that they can't today?
+💡 WHAT THIS UNLOCKS
+One sentence with a specific capability gain — include a before/after metric (e.g. "from D+1 latency to <15 minutes" or "from 3 weeks to 2 days").
 
-📊 WHAT THE DATA SHOWS
-One sentence: reference the live demo data — what does it specifically reveal?
+📊 WHAT THE DATA REVEALS
+One sentence referencing the live demo data with a specific figure (e.g. "Your data shows X customers averaging Y days delay, representing $Z in at-risk AR").
 
-💰 THE BUSINESS BENEFIT
-One sentence: the concrete ROI or measurable outcome they will see.
+💰 QUANTIFIED BUSINESS IMPACT
+One sentence: the primary financial or operational outcome with a specific number (e.g. "$200K annual saving", "18% lift in conversion", "40 hours/month recovered").
 
-⏱️ HOW QUICKLY
-Time to value and what the first milestone looks like.
+⏱️ SPEED TO VALUE
+One sentence: first milestone with exact timeline (e.g. "Working prototype in 2 weeks, full production in {ttv}").
 
-✅ WHY SNOWFLAKE
-One sentence: the single most compelling reason Snowflake is the right platform for this.
+✅ WHY SNOWFLAKE WINS
+One sentence with a comparative or platform-specific metric (e.g. "Cortex ML runs inference 10x faster than external pipelines at <$0.01/query").
 
-Keep the entire output under 150 words. No section should exceed 2 sentences."""
+Hard rules:
+- Every sentence must have at least one number
+- Total output under 160 words
+- No filler phrases like "streamline", "leverage", "empower"
+- Write as if presenting to a {holder} who will challenge every claim"""
 
                 with st.spinner(""):
                     try:
@@ -1782,8 +1702,8 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
             if hasattr(st.session_state, 'pitch') and st.session_state.pitch:
                 lines = st.session_state.pitch.strip().split('\n')
                 icon_colors = {
-                    "🔴": "#c94040", "💡": "#3da668", "📊": "#5b9aff",
-                    "💰": "#d4a017", "⏱": "#b07fff", "✅": "#3da668",
+                    "🔴": "#b03030", "💡": "#2d8050", "📊": "#2563eb",
+                    "💰": "#b8860b", "⏱": "#7c3aed", "✅": "#2d8050",
                 }
                 rendered = []
                 current_header = current_body = ""
@@ -1802,20 +1722,34 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
                     col_a, col_b = st.columns(2)
                     for i, (header, body) in enumerate(rendered):
                         fc = header[0] if header else "•"
-                        color = icon_colors.get(fc, "#3da668")
+                        color = icon_colors.get(fc, "#2d8050")
+                        # Highlight numbers in the body text
+                        import re
+                        highlighted_body = re.sub(
+                            r'(\$[\d,]+[KMB]?|\d+[\d,.]*\s*(?:%|hours?|days?|weeks?|months?|minutes?|x|times?|hrs?)|\d{2,}[\d,]*)',
+                            r'<strong style="color:\g<0>;color:' + color + r';">\g<0></strong>',
+                            body
+                        )
+                        # simpler approach - highlight numbers
+                        highlighted_body = re.sub(
+                            r'(\$[\d,]+[KMBk]?|\b\d+\.?\d*\s*(?:x|%|hrs?|hours?|days?|weeks?|months?|minutes?)|\b\d{2,}[\d,]*\b)',
+                            lambda m: f'<span style="color:{color};font-weight:700;">{m.group(0)}</span>',
+                            body
+                        )
                         card_html = f"""
-                        <div style="background:var(--card-bg);border:1px solid var(--card-border);
+                        <div style="background:#ffffff;border:1px solid var(--card-border);
                                     border-left:3px solid {color};border-radius:8px;
-                                    padding:0.85rem 1rem;margin-bottom:0.55rem;">
+                                    padding:0.85rem 1rem;margin-bottom:0.55rem;
+                                    box-shadow:0 1px 6px rgba(0,0,0,0.05);">
                             <div style="font-size:11px;font-weight:700;color:{color};margin-bottom:0.25rem;
                                         font-family:'Syne',sans-serif;">{header}</div>
-                            <div style="font-size:12px;color:var(--text-secondary);line-height:1.65;">{body}</div>
+                            <div style="font-size:12px;color:var(--text-secondary);line-height:1.65;">{highlighted_body}</div>
                         </div>"""
                         with (col_a if i % 2 == 0 else col_b):
                             st.markdown(card_html, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
-                    <div style="background:var(--card-bg);border-left:3px solid var(--green-400);
+                    <div style="background:#ffffff;border-left:3px solid #2d8050;
                                 border:1px solid var(--card-border);border-radius:8px;
                                 padding:1rem 1.2rem;font-size:12px;color:var(--text-secondary);line-height:1.8;">
                         {st.session_state.pitch.replace(chr(10),'<br/>')}
@@ -1865,52 +1799,52 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
   *{{box-sizing:border-box;}}
-  body{{font-family:'Segoe UI',Arial,sans-serif;background:#0f1a13;color:#e8f0ea;margin:0;padding:0;font-size:14px;}}
-  .cover{{background:linear-gradient(135deg,#0a120d 0%,#141f18 60%,#1a2820 100%);
-          color:#fff;padding:3rem 3.5rem;border-bottom:1px solid rgba(61,166,104,0.15);
+  body{{font-family:'Segoe UI',Arial,sans-serif;background:#f5f7f5;color:#0f1f14;margin:0;padding:0;font-size:14px;}}
+  .cover{{background:linear-gradient(135deg,#1f5c38 0%,#2d8050 60%,#3da668 100%);
+          color:#fff;padding:3rem 3.5rem;border-bottom:1px solid rgba(255,255,255,0.1);
           -webkit-print-color-adjust:exact;print-color-adjust:exact;}}
-  .cover h1{{font-size:2rem;font-weight:800;margin:0 0 0.4rem;letter-spacing:-0.02em;color:#e8f0ea;}}
-  .cover .sub{{font-size:1rem;opacity:0.55;margin-bottom:1.2rem;}}
+  .cover h1{{font-size:2rem;font-weight:800;margin:0 0 0.4rem;letter-spacing:-0.02em;color:#ffffff;}}
+  .cover .sub{{font-size:1rem;opacity:0.75;margin-bottom:1.2rem;}}
   .cover .pills{{display:flex;flex-wrap:wrap;gap:0.5rem;}}
-  .cover .pill{{background:rgba(61,166,104,0.12);border:1px solid rgba(61,166,104,0.25);
-                border-radius:20px;padding:0.25rem 0.75rem;font-size:0.78rem;color:#6ecca0;}}
-  .section{{padding:2rem 3.5rem;border-bottom:1px solid rgba(255,255,255,0.05);}}
-  .section h2{{font-size:1.05rem;font-weight:700;color:#e8f0ea;margin:0 0 1rem;
-               padding-bottom:0.4rem;border-bottom:1px solid rgba(61,166,104,0.25);}}
+  .cover .pill{{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);
+                border-radius:20px;padding:0.25rem 0.75rem;font-size:0.78rem;color:#ffffff;}}
+  .section{{padding:2rem 3.5rem;border-bottom:1px solid rgba(0,0,0,0.07);background:#ffffff;}}
+  .section:nth-child(odd){{background:#f5f7f5;}}
+  .section h2{{font-size:1.05rem;font-weight:700;color:#0f1f14;margin:0 0 1rem;
+               padding-bottom:0.4rem;border-bottom:2px solid #2d8050;}}
   .roi-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.25rem;}}
-  .roi-card{{background:rgba(61,166,104,0.08);border:1px solid rgba(61,166,104,0.18);
-             border-radius:8px;padding:0.85rem 1rem;border-top:2px solid #3da668;
+  .roi-card{{background:#ffffff;border:1px solid rgba(0,0,0,0.10);
+             border-radius:8px;padding:0.85rem 1rem;border-top:2px solid #2d8050;
              -webkit-print-color-adjust:exact;print-color-adjust:exact;}}
   .roi-card .rlbl{{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;
-                   color:#3da668;font-weight:700;margin-bottom:0.25rem;}}
-  .roi-card .rval{{font-size:0.95rem;font-weight:700;color:#e8f0ea;line-height:1.35;}}
+                   color:#2d8050;font-weight:700;margin-bottom:0.25rem;}}
+  .roi-card .rval{{font-size:0.95rem;font-weight:700;color:#0f1f14;line-height:1.35;}}
   .kpi-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.25rem;}}
-  .kpi{{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:8px;padding:0.85rem 1rem;border-top:2px solid #3da668;}}
-  .kpi .val{{font-size:1.4rem;font-weight:800;color:#e8f0ea;}}
-  .kpi .lbl{{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:#5a7a65;margin-top:0.2rem;}}
-  .chart-wrap{{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  .kpi{{background:#ffffff;border:1px solid rgba(0,0,0,0.10);
+        border-radius:8px;padding:0.85rem 1rem;border-top:2px solid #2d8050;}}
+  .kpi .val{{font-size:1.4rem;font-weight:800;color:#0f1f14;}}
+  .kpi .lbl{{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:#7a9a86;margin-top:0.2rem;}}
+  .chart-wrap{{background:#ffffff;border:1px solid rgba(0,0,0,0.08);
                border-radius:10px;padding:1rem;margin-bottom:1rem;}}
   .data-table{{width:100%;border-collapse:collapse;font-size:0.83rem;margin-top:0.5rem;}}
-  .data-table th{{background:#1a3d28;color:#6ecca0;padding:0.55rem 0.8rem;text-align:left;
+  .data-table th{{background:#2d8050;color:#ffffff;padding:0.55rem 0.8rem;text-align:left;
                   font-weight:600;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
-  .data-table td{{padding:0.45rem 0.8rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#9dbdaa;}}
-  .data-table tr:nth-child(even) td{{background:rgba(255,255,255,0.02);}}
-  .pitch-box{{background:rgba(61,166,104,0.06);border-left:3px solid #3da668;
-              border:1px solid rgba(61,166,104,0.18);border-radius:8px;
-              padding:1.25rem 1.75rem;font-size:0.9rem;line-height:1.85;color:#9dbdaa;}}
-  .sql-box{{background:#0a120d;border:1px solid rgba(61,166,104,0.15);border-radius:6px;
+  .data-table td{{padding:0.45rem 0.8rem;border-bottom:1px solid rgba(0,0,0,0.06);color:#3a5a46;}}
+  .data-table tr:nth-child(even) td{{background:#f0f5f2;}}
+  .pitch-box{{background:#f0f5f2;border-left:3px solid #2d8050;
+              border:1px solid rgba(45,128,80,0.2);border-radius:8px;
+              padding:1.25rem 1.75rem;font-size:0.9rem;line-height:1.85;color:#3a5a46;}}
+  .sql-box{{background:#f0f5f2;border:1px solid rgba(45,128,80,0.2);border-radius:6px;
              padding:0.85rem 1.1rem;font-family:'Courier New',monospace;font-size:0.78rem;
-             color:#6ecca0;white-space:pre-wrap;overflow-x:auto;}}
+             color:#1a4d30;white-space:pre-wrap;overflow-x:auto;}}
   .badge{{display:inline-block;padding:0.2rem 0.65rem;border-radius:4px;font-size:0.72rem;
-          font-weight:700;background:rgba(61,166,104,0.12);color:#3da668;
-          border:1px solid rgba(61,166,104,0.25);margin-right:0.3rem;}}
-  .footer-bar{{background:#0a120d;color:rgba(255,255,255,0.3);text-align:center;
+          font-weight:700;background:rgba(45,128,80,0.10);color:#2d8050;
+          border:1px solid rgba(45,128,80,0.25);margin-right:0.3rem;}}
+  .footer-bar{{background:#1f5c38;color:rgba(255,255,255,0.6);text-align:center;
                padding:1rem 2rem;font-size:0.75rem;
-               border-top:1px solid rgba(61,166,104,0.1);
                -webkit-print-color-adjust:exact;print-color-adjust:exact;}}
   @media print{{
-    body{{background:#fff;color:#132018;font-size:12px;}}
+    body{{font-size:12px;}}
     .section{{padding:1.25rem 2rem;page-break-inside:avoid;}}
     .chart-wrap{{page-break-inside:avoid;}}
   }}
@@ -1918,9 +1852,9 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
 </head>
 <body>
 <div class="cover">
-  <div style="font-size:0.72rem;letter-spacing:0.2em;opacity:0.35;margin-bottom:0.4rem;text-transform:uppercase;">InsightForge · Snowflake Cortex</div>
+  <div style="font-size:0.72rem;letter-spacing:0.2em;opacity:0.6;margin-bottom:0.4rem;text-transform:uppercase;">InsightForge · Snowflake Cortex</div>
   <h1>Demo Pack: {selected_match['usecase']}</h1>
-  <div class="sub">Prepared for <strong style="color:#6ecca0;">{customer_name}</strong> · {industry}</div>
+  <div class="sub">Prepared for <strong>{customer_name}</strong> · {industry}</div>
   <div class="pills">
     <span class="pill">📅 {date.today().strftime('%d %B %Y')}</span>
     <span class="pill">📊 {selected_match.get('type','')}</span>
@@ -1936,9 +1870,9 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
     <div class="roi-card"><div class="rlbl">👤 Stakeholder</div><div class="rval">{holder}</div></div>
     <div class="roi-card"><div class="rlbl">⏱️ Time to Value</div><div class="rval">{ttv_html}</div></div>
   </div>
-  <p style="font-size:0.92rem;line-height:1.7;color:#9dbdaa;">{selected_match.get('demo_description','')}</p>
+  <p style="font-size:0.92rem;line-height:1.7;color:#3a5a46;">{selected_match.get('demo_description','')}</p>
   <p style="margin:0;"><span class="badge">{selected_match.get('data_confidence','')} Confidence</span>
-     <span style="font-size:0.85rem;color:#9dbdaa;">{selected_match.get('what_data_proves','')}</span></p>
+     <span style="font-size:0.85rem;color:#3a5a46;">{selected_match.get('what_data_proves','')}</span></p>
 </div>
 <div class="section">
   <h2>Data Snapshot — {len(df)} Records</h2>
@@ -1959,9 +1893,9 @@ Keep the entire output under 150 words. No section should exceed 2 sentences."""
   <h2>SQL Query</h2>
   <div class="sql-box">{selected_match.get('sql','').replace('<','&lt;').replace('>','&gt;')}</div>
 </div>
-{'<div class="section"><h2>Sales Pitch</h2><div class="pitch-box">' + pitch_html + '</div></div>' if pitch_html else ''}
+{'<div class="section"><h2>Quantitative Talking Points</h2><div class="pitch-box">' + pitch_html + '</div></div>' if pitch_html else ''}
 <div class="footer-bar">
-  Generated by <strong style="color:rgba(110,204,160,0.7);">InsightForge</strong> · Snowflake Cortex ·
+  Generated by <strong style="color:rgba(255,255,255,0.9);">InsightForge</strong> · Snowflake Cortex ·
   {date.today().strftime('%d %B %Y')} · Confidential — Prepared for {customer_name}
 </div>
 </body>
